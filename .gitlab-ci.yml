@@ -2,10 +2,11 @@ image: alpine:latest
 
 pages:
   stage: deploy
+  tags: [docker]
   script:
-  - echo 'Nothing to do...'
+    - echo 'Nothing to do...'
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - pages-test
+    - pages-test
