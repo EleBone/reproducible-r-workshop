@@ -25,10 +25,6 @@ library(SummarizedExperiment)
 min.cpm <- 1
 min.cpm.fraction <- 1/4
 
-# Output results/save directory
-save.dir <- "results-20241003"
-dir.create(save.dir)
-
 # Data preparation ----
 ## Load and inspect experiment data ----
 
@@ -145,7 +141,7 @@ boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
         ylab="log2(1+counts)")
 
 # Output: table of prepared gene expression data (counts x samples)
-write.csv(filteredCountsMatUQ, file = paste0(save.dir,"/filteredCountsMatUQ.csv"))
+write.csv(filteredCountsMatUQ, file = "/Users/iggy/projects/reproducible-r-workshop/filteredCountsMatUQ.csv")
 
 # Exploratory plots to view the amount of data collected in each sample:
 # Plot the depth of sequencing per sample
