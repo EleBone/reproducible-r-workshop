@@ -257,9 +257,10 @@ volcano_plot_df$label[1:n_highlighted] <-
 ggplot(volcano_plot_df, aes(x = logFC, y = (-log10(adj.P.Val)))) +
   geom_point() +
   geom_text_repel(aes(label = label),
-                  max.overlaps = Inf,
-                  size = 3,
-                  colour = "blue") +
+    max.overlaps = Inf,
+    size = 3,
+    colour = "blue"
+  ) +
   geom_hline(yintercept = -log10(0.05), linetype = "dashed") +
   theme_light()
 
@@ -269,19 +270,23 @@ ggplot(volcano_plot_df, aes(x = logFC, y = (-log10(adj.P.Val)))) +
   ylim(c(0, 4.5)) +
   geom_point(size = 1, alpha = 0.4) +
   geom_text_repel(aes(label = label),
-                  max.overlaps = Inf,
-                  size = 3,
-                  colour = "blue",
-                  force = 5,
-                  min.segment.length = 0,
-                  segment.alpha = 0.2) +
-  geom_hline(yintercept = -log10(0.05),
-             alpha = 0.5,
-             colour = "darkgreen",
-             linetype = "dashed") +
+    max.overlaps = Inf,
+    size = 3,
+    colour = "blue",
+    force = 5,
+    min.segment.length = 0,
+    segment.alpha = 0.2
+  ) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    alpha = 0.5,
+    colour = "darkgreen",
+    linetype = "dashed"
+  ) +
   annotate("label",
-           y = -log10(0.05),
-           x = -7,
-           label = "adj.p=0.05",
-           colour = "darkgreen") +
+    y = -log10(0.05),
+    x = -7,
+    label = "adj.p=0.05",
+    colour = "darkgreen"
+  ) +
   theme_light()
