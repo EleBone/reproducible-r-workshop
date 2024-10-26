@@ -19,6 +19,12 @@ library(limma)
 library(ggrepel)
 library(SummarizedExperiment)
 
+# Analysis variables ----
+
+# Gene filtering
+min.cpm <- 1
+min.cpm.fraction <- 1/4
+
 # Data preparation ----
 ## Load and inspect experiment data ----
 
@@ -52,8 +58,8 @@ str(raw.counts.matrix)
 cpm <- cpm(raw.counts.matrix)
 dim(cpm)
 
-# Require genes have at least 1 record in at least 1/4 of the samples
-keepGenes <- rowSums(cpm >= 1) >= ncol(cpm) * 1/4
+# Require genes have at least 'min.cpm' in at least 'min.cpm.fraction' of the samples
+keepGenes <- rowSums(cpm >= min.cpm) >= ncol(cpm) * min.cpm.fraction
 sum(keepGenes)
 filteredCountsMat <- data.matrix(raw.counts.matrix[keepGenes,])
 dim(filteredCountsMat)
