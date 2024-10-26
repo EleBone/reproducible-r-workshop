@@ -189,13 +189,10 @@ topTable.dex <- topTable(efit, coef = "dex", number = Inf, sort.by = "p")
 head(topTable.dex)
 hist(topTable.dex$P.Value)
 
-# Check the published DEG: CRISPLD2 (ENSG00000103196)
-gene.of.interest <- "ENSG00000103196" # (i.e. CRISPLD2, if not convering from the provided Ensembl ID)
-gene.of.interest <- "CRISPLD2" # after converting to gene symbols
-
-topTable.dex[which(topTable.dex$ID==gene.of.interest),]
-plot(log2(1+filteredCountsMatUQ[gene.of.interest,]), x=treatment.groups,
-     ylab="UQ-normalised mRNA counts", xlab="", main=gene.of.interest)
+# Explore a gene of interest
+topTable.dex[which(topTable.dex$ID=="ATP6V1E2"),]
+plot(log2(1+filteredCountsMatUQ["ATP6V1B2",]), x=treatment.groups,
+     ylab="UQ-normalised mRNA counts", xlab="", main="ATP6V1E2")
 
 # Could continue with typical visualisations (heatmap, volcano plot), PCA analysis, etc.
 
