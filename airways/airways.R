@@ -65,16 +65,17 @@ str(raw_counts_matrix)
 ## Filter out low-expression counts ----
 
 # Counts per million (cpm)
-cpm <- cpm(raw_counts_matrix)
-dim(cpm)
+cpm_values <- cpm(raw_counts_matrix)
+dim(cpm_values)
 
 # Require genes have at least 'min.cpm' in at least 'min.cpm.fraction' of the
 # samples
-keep_genes <- rowSums(cpm >= min_cpm) >= ncol(cpm) * min_cpm_fraction
+keep_genes <-
+  rowSums(cpm_values >= min_cpm) >= ncol(cpm_values) * min_cpm_fraction
 sum(keep_genes)
 filtered_counts_mat <- data.matrix(raw_counts_matrix[keep_genes, ])
 dim(filtered_counts_mat)
-print(paste0("Keeping ", sum(keep_genes), " of ", nrow(cpm), " genes."))
+print(paste0("Keeping ", sum(keep_genes), " of ", nrow(cpm_values), " genes."))
 
 
 
