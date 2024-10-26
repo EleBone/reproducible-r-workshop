@@ -21,6 +21,8 @@ library(SummarizedExperiment)
 
 # Analysis variables ----
 
+GENE_OF_INTEREST <- "ATP6V1E2"
+
 # Gene filtering
 min.cpm <- 1
 min.cpm.fraction <- 1/4
@@ -190,9 +192,9 @@ head(topTable.dex)
 hist(topTable.dex$P.Value)
 
 # Explore a gene of interest
-topTable.dex[which(topTable.dex$ID=="ATP6V1E2"),]
-plot(log2(1+filteredCountsMatUQ["ATP6V1B2",]), x=treatment.groups,
-     ylab="UQ-normalised mRNA counts", xlab="", main="ATP6V1E2")
+topTable.dex[which(topTable.dex$ID==GENE_OF_INTEREST),]
+plot(log2(1+filteredCountsMatUQ[GENE_OF_INTEREST,]), x=treatment.groups,
+     ylab="UQ-normalised mRNA counts", xlab="", main=GENE_OF_INTEREST)
 
 # Could continue with typical visualisations (heatmap, volcano plot), PCA analysis, etc.
 
