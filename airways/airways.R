@@ -38,8 +38,8 @@ dir.create(save_dir)
 ## Load and inspect experiment data ----
 
 # The 'airway' package containes an example RNAseq experiment.
-# Himes et al. 'RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a 
-# Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway 
+# Himes et al. 'RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a
+# Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway
 # Smooth Muscle Cells.'
 # PLoS One. 2014 Jun 13;9(6):e99625. PMID: 24926665. GEO: GSE52778.
 
@@ -52,12 +52,9 @@ str(airway@assays@data@listData[["counts"]])
 table(airway$Sample, airway$dex)
 treatment_groups <- factor(airway$dex)
 
-# Could edit here to rename the treatment groups "Control" and "DEX" to match 
+# Could edit here to rename the treatment groups "Control" and "DEX" to match
 # the paper, then see below that later code needs to be updated?
-# treatment_groups <- vector()
-# treatment_groups[airway$dex=="untrt"] <- "Control"
-# treatment_groups[airway$dex=="trt"] <- "DEX"
-# treatment_groups <- factor(treatment.groups)
+
 
 # Obtain the raw counts as a data matrix: genes(rows) x sample(columns)
 raw_counts_matrix <- assay(airway, "counts")
@@ -71,7 +68,7 @@ str(raw_counts_matrix)
 cpm <- cpm(raw_counts_matrix)
 dim(cpm)
 
-# Require genes have at least 'min.cpm' in at least 'min.cpm.fraction' of the 
+# Require genes have at least 'min.cpm' in at least 'min.cpm.fraction' of the
 # samples
 keep_genes <- rowSums(cpm >= min_cpm) >= ncol(cpm) * min_cpm_fraction
 sum(keep_genes)
@@ -82,29 +79,32 @@ print(paste0("Keeping ", sum(keep_genes), " of ", nrow(cpm), " genes."))
 
 
 # Convert Ensembl ID numbers to Gene Symbols ----
-# This section covers a typical issue, where genes are referred to by an accession number (in this case Ensembl ID).
-# It is easier to interpret them if they are named with their gene symbol. The biomaRt package can be used.
+# This section covers a typical issue, where genes are referred to by an
+# accession number (in this case Ensembl ID).
+# It is easier to interpret them if they are named with their gene symbol.
+# The biomaRt package can be used.
 
 # get an object that references the relevant biomart database (human gene names)
 ensembl <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
 
-# Could specify which version of the ensembl gene names for better reproducibility?
-# Some gene names changed over time (with new research, 
-# or fixing problematic gene names eg. "MARCH7" text name autocorrecting to a 
-# date value if you ever view it in Excel... https://doi.org/10.1371/journal.pcbi.1008984)
-# ensembl_110 <- useEnsembl(biomart = 'genes',
-#                           dataset = 'hsapiens_gene_ensembl',
-#                           version = 110)
+# Could specify which version of the ensembl gene names for better
+# reproducibility? Some gene names changed over time (with new research,
+# or fixing problematic gene names eg. "MARCH7" text name autocorrecting to a
+# date value if you ever view it in Excel...
+# https://doi.org/10.1371/journal.pcbi.1008984)
 
 ensemble_ids <- row.names(filtered_counts_mat)
 listAttributes(mart = ensembl)
-gene_table <- getBM(attributes = c(
-                                   "ensembl_gene_id",
-                                   "hgnc_symbol",
-                                   "chromosome_name"),
-                    filters = "ensembl_gene_id", values = ensemble_ids,
-                    mart = ensembl,
-                    uniqueRows = TRUE)
+gene_table <- getBM(
+  attributes = c(
+    "ensembl_gene_id",
+    "hgnc_symbol",
+    "chromosome_name"
+  ),
+  filters = "ensembl_gene_id", values = ensemble_ids,
+  mart = ensembl,
+  uniqueRows = TRUE
+)
 
 # an easy mistake would be to mismatch the rows, or
 # not check for 1:1 relationship. (manual checking steps)
@@ -142,12 +142,12 @@ quartile_normalise <- function(data, q = 4) {
   # Get the upper quartile (if q=4) value of each sample
   # (samples as the rows of 'data')
   upperquartiles <- vector(length = nrow(data))
-  for (i in 1:nrow(data)) {
+  for (i in seq_len(nrow(data))) {
     upperquartiles[i] <- quantile(data[i, ])[q]
   }
   # now scale the data.. divide by uq and multiply by the average-uq
   normalised_data <- data
-  for (i in 1:nrow(data)) {
+  for (i in seq_len(nrow(data))) {
     normalised_data[i, ] <-
       normalised_data[i, ] / upperquartiles[i] * median(upperquartiles)
   }
