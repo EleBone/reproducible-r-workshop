@@ -18,6 +18,7 @@ library(ggplot2)
 library(limma)
 library(ggrepel)
 library(SummarizedExperiment)
+library(assertthat)
 
 # Analysis variables ----
 
@@ -93,20 +94,19 @@ gene.table <- getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'chromosome
                     mart = ensembl, uniqueRows = TRUE)
 
 # an easy mistake would be to mismatch the rows, or not check for 1:1 relationship. (manual checking steps)
-dim(gene.table)
-table(is.na(gene.table$hgnc_symbol)) 
-table(duplicated(gene.table$hgnc_symbol)) 
 
-# inspect some of the problem rows
-which(duplicated(gene.table$hgnc_symbol))
-gene.table[2809,]
-gene.table$hgnc_symbol[which(duplicated(gene.table$hgnc_symbol))]
+# Check for missing hgnc_symbol values
+assert_that(!any(is.na(gene.table$hgnc_symbol)), 
+            msg = "Missing values detected in 'hgnc_symbol' column.")
 
 # There is a blank value for gene symbol in a few hundred cases.
 # They can fall back to Ensemble Id.
 gene.table$hgnc_symbol[gene.table$hgnc_symbol==""] <- gene.table$ensembl_gene_id[gene.table$hgnc_symbol==""]
-table(is.na(gene.table$hgnc_symbol)) #ok
-table(duplicated(gene.table$hgnc_symbol)) #ok
+
+# Check for duplicates in hgnc_symbol and store duplicates for further review
+duplicate_symbols <- gene.table$hgnc_symbol[duplicated(gene.table$hgnc_symbol)]
+assert_that(length(duplicate_symbols) == 0, 
+            msg = paste("Duplicated entries found for symbols:", paste(duplicate_symbols, collapse = ", ")))
 
 gene.table$hgnc_symbol[grep(x=gene.table$hgnc_symbol,"MARCH")] 
 # just showing at some point they inserted an "F" in the MARCH* genes
