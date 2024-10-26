@@ -25,6 +25,16 @@ library(SummarizedExperiment)
 min.cpm <- 1
 min.cpm.fraction <- 1/4
 
+#### Functions
+
+# Function for exploratory plots to view sample depth
+depth_plot <- function(count_matrix, x_category, x_label){
+  plot(y = colSums(count_matrix)/10^6, ylab="Counts (millions)", 
+       ylim=c(0, max(colSums(count_matrix)/10^6)),
+       x = x_category,
+       xlab = x_label)
+}
+
 # Output results/save directory
 save_dir <- "results/"
 dir.create(save_dir)
@@ -149,15 +159,14 @@ write.csv(filteredCountsMatUQ, file = paste0(save_dir,format(Sys.time(), "%Y-%m-
 
 # Exploratory plots to view the amount of data collected in each sample:
 # Plot the depth of sequencing per sample
-plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",
-     ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
-     x = seq_along(colSums(filteredCountsMat)),
-     xlab = "Sample #")
+depth_plot(filteredCountsMat,
+           seq_along(colSums(filteredCountsMat)),
+           "Sample #")
+
 # Add experiment groupings
-plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", 
-     ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
-     x = factor(airway$dex),
-     xlab = "Experiment grouping")
+depth_plot(filteredCountsMat,
+           factor(airway$dex),
+           "Experiment grouping")
 
 # DEG analysis ----
 # (Differential Gene Expression tests)
