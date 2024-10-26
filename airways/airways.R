@@ -149,13 +149,15 @@ write.csv(filteredCountsMatUQ, file = paste0(save_dir,format(Sys.time(), "%Y-%m-
 
 # Exploratory plots to view the amount of data collected in each sample:
 # Plot the depth of sequencing per sample
-plot(colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", 
+plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",
      ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
+     x = seq_along(colSums(filteredCountsMat)),
      xlab = "Sample #")
 # Add experiment groupings
 plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", 
      ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
-     x = factor(airway$dex))
+     x = factor(airway$dex),
+     xlab = "Experiment grouping")
 
 # DEG analysis ----
 # (Differential Gene Expression tests)
