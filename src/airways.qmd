@@ -1,0 +1,36 @@
+---
+title: "Airways"
+format: html
+editor: visual
+---
+
+## Introduction
+
+This document is designed to help workshop participants to learn how to create reproducible documents using [Quarto](https://quarto.org/).
+
+It presents findings from exploratory analysis of data from Himes et al. 'RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells.'
+
+PLoS One. 2014 Jun 13;9(6):e99625. PMID: 24926665. GEO: GSE52778.
+
+## Methods
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Results
+
+## Discussion
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
