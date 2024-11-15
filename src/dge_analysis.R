@@ -1,8 +1,12 @@
 # DEG analysis ----
 # (Differential Gene Expression tests)
 
+# load helpers ----
+source('src/helpers.R')
+
 # load packages
 library(limma)
+library(edgeR)
 
 # load data
 treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))

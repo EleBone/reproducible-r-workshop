@@ -1,6 +1,9 @@
 # Data preparation
 
-# load packages
+# load helpers ----
+source('src/helpers.R')
+
+# load packages ----
 library(biomaRt)
 library(edgeR)
 

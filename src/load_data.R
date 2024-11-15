@@ -1,5 +1,9 @@
 # Data preparation ----
 
+# load helpers ----
+source('src/helpers.R')
+
+# load packages ----
 library(airway)
 
 ## Load and inspect experiment data ----
