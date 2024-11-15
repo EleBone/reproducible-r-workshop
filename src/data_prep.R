@@ -9,10 +9,6 @@ library(edgeR)
 
 # Analysis variables ----
 
-# Gene filtering
-min.cpm <- 1
-min.cpm.fraction <- 1/4
-
 # load data
 treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
 raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
