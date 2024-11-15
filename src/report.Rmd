@@ -1,0 +1,73 @@
+---
+title: "Airway analysis"
+output: html_document
+date: "2024-11-04"
+knit: (function(inputFile, encoding) {
+      source('src/helpers.R');
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_dir=save_dir)})
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set working directory
+setwd('../')
+
+# load packages
+library(pluralize)
+
+# load data
+treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
+raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
+filteredCountsMat <- readRDS(file.path(save_dir, "filteredCountsMat.rds"))
+filteredCountsMatUQ <- readRDS(file.path(save_dir, "filteredCountsMatUQ.rds"))
+```
+
+## Introduction
+
+This report contains exploratory data analysis results of the 'airways' package RNAseq data.
+
+The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_words(colnames(raw.counts.matrix))`), and `r length(levels(treatment.groups))` treatment groups (`r knitr::combine_words(levels(treatment.groups), before = "'", sep = " / ", and = "")`).
+
+## Methods
+
+### Filtering, tidying and normalising.
+
+The data were filtered to exclude low-expression counts.
+Genes were required to have a minimum of `r paste(min.cpm, pluralize("count", min.cpm))` per million in at least `r min.cpm.fraction` percent of samples. 
+After filtering there were `r nrow(filteredCountsMat)` genes retained from the initial `r nrow(raw.counts.matrix)` genes.
+
+In the 'Airway' package data genes are referred to by an accession number (in this case Ensembl ID).
+To make it easier to interpret the data, the Ensemble IDs were replaced with the corresponding gene symbol, using the biomaRt package.
+In cases where matches were not found, the Ensemble IDs were retained.
+
+Finally, an upper-quartile normalise function was applied to correct for any differences in library depth between samples.
+
+## Results
+
+Upper quartile normalisation increased the consistency of counts between samples (compare figures 1 and 2).
+
+```{r unnormalised, echo=FALSE}
+boxplot(log2(1+filteredCountsMat), las=2, cex.axis=0.5, cex=0.5,
+        ylab="log2(1+counts)")
+```
+
+*Figure 1. Box plot of un-normalised counts by sample*
+
+```{r normalised, echo=FALSE}
+boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
+        ylab="log2(1+counts)")
+```
+
+*Figure 2. Box plot of upper-quartile normalised counts by sample*
+
+There was not a strong difference in counts between treatment groups.
+While the treatment group had larger variation, there was strong overlap in the distribution of counts between treatments (see figure 3).
+
+```{r count-by-treatment, echo=FALSE}
+plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", 
+     ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
+     x = treatment.groups)
+```
