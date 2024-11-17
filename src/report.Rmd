@@ -18,11 +18,19 @@ setwd('../')
 # load packages
 library(pluralize)
 
+# Set 'Gene of interest'
+#gene.of.interest <- "ENSG00000103196" # (i.e. CRISPLD2, if not convering from the provided Ensembl ID)
+gene.of.interest <- "CRISPLD2" # after converting to gene symbols
+
+# turn off scientific notation
+options(scipen=999)
+
 # load data
 treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
 raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
 filteredCountsMat <- readRDS(file.path(save_dir, "filteredCountsMat.rds"))
 filteredCountsMatUQ <- readRDS(file.path(save_dir, "filteredCountsMatUQ.rds"))
+topTable.dex <- readRDS(file.path(save_dir, "topTable.dex.rds"))
 ```
 
 ## Introduction
@@ -45,29 +53,51 @@ In cases where matches were not found, the Ensemble IDs were retained.
 
 Finally, an upper-quartile normalise function was applied to correct for any differences in library depth between samples.
 
+### Differential Gene Expression tests
+
+A differential gene expression analysis between treatment groups was carried out using `edgeR` R package (reference).
+The raw library counts for each sample were normalised using the trimmed mean of M-values (TMM) proposed by Robinson and Oshlack (2010).
+
+After creating test design and contrast objects, count data was transformed using mean-variance modeling at the observational level using the `voom` function from the `limma` R package (reference).
+A linear model was fit and differential expression statistics were calculated using an empirical Bayes method (`efit` function from `limma` R package).
+
 ## Results
 
 Upper quartile normalisation increased the consistency of counts between samples (compare figures 1 and 2).
 
 ```{r unnormalised, echo=FALSE}
 boxplot(log2(1+filteredCountsMat), las=2, cex.axis=0.5, cex=0.5,
-        ylab="log2(1+counts)")
+        ylab="log2(1+counts)",
+        xlab="Samples")
 ```
 
 *Figure 1. Box plot of un-normalised counts by sample*
 
 ```{r normalised, echo=FALSE}
 boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
-        ylab="log2(1+counts)")
+        ylab="log2(1+counts)",
+        xlab="Samples")
 ```
 
 *Figure 2. Box plot of upper-quartile normalised counts by sample*
 
-There was not a strong difference in counts between treatment groups.
-While the treatment group had larger variation, there was strong overlap in the distribution of counts between treatments (see figure 3).
+<!-- There was not a strong difference in counts between treatment groups. -->
+<!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see figure 3). -->
 
-```{r count-by-treatment, echo=FALSE}
-plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", 
-     ylim=c(0, max(colSums(filteredCountsMat)/10^6)),
-     x = treatment.groups)
+<!-- ```{r count-by-treatment, echo=FALSE} -->
+<!-- plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",  -->
+<!--      ylim=c(15, max(colSums(filteredCountsMat)/10^6)), -->
+<!--      x = treatment.groups, xlab="Treatment groups") -->
+<!-- ``` -->
+
+The differential statistics for the gene of interest, `r gene.of.interest`, is are shown in Figure 3 below
+The difference between treatment groups for this gene was `r if(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val < 0.05) 'statistically significant' else 'not statistically significant'` (p-value = `r signif(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val, digits = 2)`).
+
+```{r gene-of-interest, echo=FALSE}
+plot(log2(1+filteredCountsMatUQ[gene.of.interest,]), x=treatment.groups,
+     ylab="UQ-normalised mRNA counts", xlab="", main=gene.of.interest)
+```
+
+```{r volcano-plot, echo=FALSE, fig.align='center', out.width='100%', fig.cap='Figure 4. Volcano plot with the 30 most-significant genes labelled'}
+knitr::include_graphics(paste0('../',save_dir, 'volcano_plot.png'))
 ```
