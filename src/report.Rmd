@@ -1,7 +1,7 @@
 ---
 title: "Airway analysis"
 output: html_document
-date: "2024-11-04"
+date: "`r format(Sys.time(), '%e %B %Y')`"
 knit: (function(inputFile, encoding) {
       source('src/helpers.R');
       rmarkdown::render(inputFile,
@@ -63,7 +63,9 @@ A linear model was fit and differential expression statistics were calculated us
 
 ## Results
 
-Upper quartile normalisation increased the consistency of counts between samples (compare figures 1 and 2).
+### Normalisation
+
+Upper quartile normalisation increased the consistency of counts between samples (compare Figs. 1 and 2).
 
 ```{r unnormalised, echo=FALSE}
 boxplot(log2(1+filteredCountsMat), las=2, cex.axis=0.5, cex=0.5,
@@ -82,22 +84,33 @@ boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
 *Figure 2. Box plot of upper-quartile normalised counts by sample*
 
 <!-- There was not a strong difference in counts between treatment groups. -->
-<!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see figure 3). -->
+<!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see fig 3). -->
 
 <!-- ```{r count-by-treatment, echo=FALSE} -->
 <!-- plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",  -->
 <!--      ylim=c(15, max(colSums(filteredCountsMat)/10^6)), -->
 <!--      x = treatment.groups, xlab="Treatment groups") -->
 <!-- ``` -->
+<!-- Commented out, because I am confused as to whether this should be UQ normalised  -->
 
-The differential statistics for the gene of interest, `r gene.of.interest`, is are shown in Figure 3 below
-The difference between treatment groups for this gene was `r if(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val < 0.05) 'statistically significant' else 'not statistically significant'` (p-value = `r signif(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val, digits = 2)`).
+### Gene of interest
+
+The differences in UQ-normalised mRNA counts between treatment groups for the gene of interest, `r gene.of.interest`, are shown in Fig. 3 below
+The difference in counts between treatment groups for this gene was `r if(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val < 0.05) 'statistically significant' else 'not statistically significant'` (p-value = `r signif(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val, digits = 2)`).
 
 ```{r gene-of-interest, echo=FALSE}
 plot(log2(1+filteredCountsMatUQ[gene.of.interest,]), x=treatment.groups,
      ylab="UQ-normalised mRNA counts", xlab="", main=gene.of.interest)
 ```
 
-```{r volcano-plot, echo=FALSE, fig.align='center', out.width='100%', fig.cap='Figure 4. Volcano plot with the 30 most-significant genes labelled'}
+*Figure 3. Box plot of differences in UQ-normlised mRNA counts between treatment groups for `r gene.of.interest`*
+
+### Volcano plot
+
+The volcano plot below (Fig. 4) shows the distribution of statistical significance (P value) versus magnitude of change (fold change).
+The 30 most-significant genes are annotated.
+Of the 30 genes with most statistically significant differences, `r table(sign(topTable.dex$logFC[1:30]))['-1']` were downregulated, and `r table(sign(topTable.dex$logFC[1:30]))['1']` were upregulated.
+
+```{r volcano-plot, echo=FALSE, fig.align='left', out.width='100%', fig.cap='Figure 4. Volcano plot with the 30 most-significant genes labelled'}
 knitr::include_graphics(paste0('../',save_dir, 'volcano_plot.png'))
 ```
