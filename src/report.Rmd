@@ -17,7 +17,7 @@ knit: (function(inputFile, encoding) {
 # Without this, the output is by default created in the same directory as the `*.Rmd` file.
 ---
 
-```{r, echo=FALSE}
+```{r logo, echo=FALSE}
 htmltools::img(src = knitr::image_uri(file.path("../assets/Garvan-Institute_Logo_RGB.png")), 
                alt = 'logo', 
                style = 'position:absolute; top:0; right:0; padding:10px; height:128px;')
