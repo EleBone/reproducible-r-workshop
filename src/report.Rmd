@@ -46,7 +46,7 @@ topTable.dex <- readRDS(file.path(save_dir, "topTable.dex.rds"))
 
 ## Introduction
 
-This report contains exploratory data analysis results of the 'airways' package RNAseq data.
+This report contains exploratory data analysis results of the 'airways' package RNAseq data (Himes *et al* 2014).
 
 The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_words(colnames(raw.counts.matrix))`), and `r length(levels(treatment.groups))` treatment groups (`r knitr::combine_words(levels(treatment.groups), before = "'", sep = " / ", and = "")`).
 
@@ -102,7 +102,6 @@ boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
 <!--      ylim=c(15, max(colSums(filteredCountsMat)/10^6)), -->
 <!--      x = treatment.groups, xlab="Treatment groups") -->
 <!-- ``` -->
-<!-- Commented out, because I am confused as to whether this should be UQ normalised or not. -->
 
 ### Gene of interest
 
@@ -129,6 +128,8 @@ knitr::include_graphics(paste0('../',save_dir, 'volcano_plot.png'))
 ## References
 
 Chen Y, Chen L, Lun ATL, Baldoni PL, Smyth GK (2024). edgeR 4.0: powerful differential analysis of sequencing data with expanded functionality and improved support for small counts and larger datasets. bioRxiv 2024.01.21.576131. doi:10.1101/2024.01.21.576131
+
+Himes BE, Jiang X, Wagner P, Hu R, Wang Q, Klanderman B, Whitaker RM, Duan Q, Lasky-Su J, Nikolos C, Jester W, Johnson M, Panettieri R Jr, Tantisira KG, Weiss ST, Lu Q. 'RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells.' PLoS One. 2014 Jun 13;9(6):e99625. PMID: 24926665. GEO: GSE52778.
 
 Law CW, Alhamdoosh M, Su S, Smyth GK, Ritchie ME (2016). RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR. F1000Research 5, 1408. https://f1000research.com/articles/5-1408
 
