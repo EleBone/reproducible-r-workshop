@@ -2,7 +2,7 @@
 title: "Airway analysis"
 output:
   bookdown::html_document2: 
-    fig_caption: yes
+    fig_caption: yes 
 author: "I Menzies & W Figgett"
 date: "`r format(Sys.time(), '%e %B %Y')`" # Note: function for automatically updating the date
 bibliography: references.bib
