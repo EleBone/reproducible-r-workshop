@@ -58,7 +58,7 @@ The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_word
 ### Filtering, tidying and normalising.
 
 The data were filtered to exclude low-expression counts.
-Genes were required to have a minimum of `r paste(min.cpm, pluralize("count", min.cpm))` per million in at least `r min.cpm.fraction` percent of samples. 
+Genes were required to have a minimum of `r paste(min.cpm, pluralize("count", min.cpm))` per million in at least `r min.cpm.fraction * 100` percent of samples. 
 After filtering there were `r nrow(filteredCountsMat)` genes retained from the initial `r nrow(raw.counts.matrix)` genes.
 
 In the 'Airway' package data genes are referred to by an accession number (in this case Ensembl ID).
