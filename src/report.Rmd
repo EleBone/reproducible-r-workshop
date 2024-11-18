@@ -1,6 +1,8 @@
 ---
 title: "Airway analysis"
-output: html_document
+output:
+  bookdown::html_document2: 
+    fig_caption: yes
 author: "I Menzies & W Figgett"
 date: "`r format(Sys.time(), '%e %B %Y')`" # Note: function for automatically updating the date
 bibliography: references.bib
@@ -77,52 +79,47 @@ A linear model was fit and differential expression statistics were calculated us
 
 ### Normalisation
 
-Upper quartile normalisation increased the consistency of counts between samples (compare Figs. 1 and 2).
+Upper quartile normalisation increased the consistency of counts between samples (compare Figs \@ref(fig:unnormalised) and \@ref(fig:normalised)).
 
-```{r unnormalised, echo=FALSE}
+```{r unnormalised, fig.cap = "Box plot of un-normalised counts by sample", echo=FALSE}
 boxplot(log2(1+filteredCountsMat), las=2, cex.axis=0.5, cex=0.5,
         ylab="log2(1+counts)",
         xlab="Samples")
 ```
 
-*Figure 1. Box plot of un-normalised counts by sample*
 
-```{r normalised, echo=FALSE}
+```{r normalised, fig.cap = "Box plot of upper-quartile normalised counts by sample", echo=FALSE}
 boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
         ylab="log2(1+counts)",
         xlab="Samples")
 ```
 
-*Figure 2. Box plot of upper-quartile normalised counts by sample*
-
 <!-- There was not a strong difference in counts between treatment groups. -->
-<!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see fig 3). -->
+<!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see fig \@ref(fig:count-by-treatment)). -->
 
-<!-- ```{r count-by-treatment, echo=FALSE} -->
-<!-- plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",  -->
+<!-- ```{r count-by-treatment, fig.cap = "Box plot comparing amount of data collected in each treatment group", echo=FALSE} -->
+<!-- plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", -->
 <!--      ylim=c(15, max(colSums(filteredCountsMat)/10^6)), -->
 <!--      x = treatment.groups, xlab="Treatment groups") -->
 <!-- ``` -->
 
 ### Gene of interest
 
-The differences in UQ-normalised mRNA counts between treatment groups for the gene of interest, `r gene.of.interest`, are shown in Fig. 3 below
+The differences in UQ-normalised mRNA counts between treatment groups for the gene of interest, `r gene.of.interest`, are shown in Fig. \@ref(fig:gene-of-interest) below.
 The difference in counts between treatment groups for this gene was `r if(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val < 0.05) 'statistically significant' else 'not statistically significant'` (p-value = `r signif(topTable.dex[which(topTable.dex$ID==gene.of.interest),]$adj.P.Val, digits = 2)`).
 
-```{r gene-of-interest, echo=FALSE}
+```{r gene-of-interest, fig.cap = "Box plot of differences in UQ-normalised mRNA counts between treatment groups for the gene of interest", echo=FALSE}
 plot(log2(1+filteredCountsMatUQ[gene.of.interest,]), x=treatment.groups,
      ylab="UQ-normalised mRNA counts", xlab="", main=gene.of.interest)
 ```
 
-<i>Figure 3. Box plot of differences in UQ-normlised mRNA counts between treatment groups for `r gene.of.interest`</i>
-
 ### Volcano plot
 
-The volcano plot below (Fig. 4) shows the distribution of statistical significance (adjusted P value) versus magnitude of change (fold change).
+The volcano plot below (Fig. \@ref(fig:volcano-plot)) shows the distribution of statistical significance (adjusted P value) versus magnitude of change (fold change).
 The 30 most-significant genes are annotated.
 Of the 30 genes with most statistically significant differences, `r table(sign(topTable.dex$logFC[1:30]))['-1']` were downregulated, and `r table(sign(topTable.dex$logFC[1:30]))['1']` were upregulated.
 
-```{r volcano-plot, echo=FALSE, fig.align='left', out.width='100%', fig.cap='Figure 4. Volcano plot with the 30 most-significant genes labelled'}
+```{r volcano-plot, echo=FALSE, fig.align='left', out.width='100%', fig.cap='Volcano plot with the 30 most-significant genes labelled'}
 knitr::include_graphics(paste0('../',save_dir, 'volcano_plot.png'))
 ```
 
