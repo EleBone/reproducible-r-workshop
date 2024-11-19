@@ -24,8 +24,6 @@ htmltools::img(src = knitr::image_uri(here("assets","Garvan-Institute_Logo_RGB.p
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
 # load packages
 library(pluralize)
 
