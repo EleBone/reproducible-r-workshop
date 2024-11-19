@@ -6,6 +6,7 @@ output:
 author: "I Menzies & W Figgett"
 date: "`r format(Sys.time(), '%e %B %Y')`" # Note: function for automatically updating the date
 bibliography: references.bib
+csl: "`r here('assets', 'biomed-central.csl')`"
 knit: (function(inputFile, encoding) {
       source('src/helpers.R');
       rmarkdown::render(inputFile,
