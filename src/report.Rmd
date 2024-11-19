@@ -29,7 +29,7 @@ library(pluralize)
 
 # Set 'Gene of interest'
 #gene.of.interest <- "ENSG00000103196" # (i.e. CRISPLD2, if not convering from the provided Ensembl ID)
-gene.of.interest <- "CRISPLD2" # after converting to gene symbols
+gene.of.interest <- "HIF1AN" # after converting to gene symbols
 
 # turn off scientific notation
 options(scipen=999)
