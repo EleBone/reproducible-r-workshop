@@ -32,5 +32,5 @@ str(raw.counts.matrix)
 # Rows are genes, columns are samples, values are integer expression counts
 
 # Save outputs
-saveRDS(treatment.groups, file = file.path(save_dir, "treatmentGroups.rds"))
-saveRDS(raw.counts.matrix, file = file.path(save_dir, "rawCountsMatrix.rds"))
+saveRDS(treatment.groups, file = here(save_dir, "treatmentGroups.rds"))
+saveRDS(raw.counts.matrix, file = here(save_dir, "rawCountsMatrix.rds"))

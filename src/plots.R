@@ -8,9 +8,9 @@ library(ggplot2)
 library(ggrepel)
 
 # load data
-topTable.dex <- readRDS(file.path(save_dir, "topTable.dex.rds"))
-efit <- readRDS(file.path(save_dir, "efit.rds"))
-filteredCountsMatUQ <- readRDS(file.path(save_dir, "filteredCountsMatUQ.rds"))
+topTable.dex <- readRDS(here(save_dir, "topTable.dex.rds"))
+efit <- readRDS(here(save_dir, "efit.rds"))
+filteredCountsMatUQ <- readRDS(here(save_dir, "filteredCountsMatUQ.rds"))
 
 # Check the published DEG: CRISPLD2 (ENSG00000103196)
 gene.of.interest <- "ENSG00000103196" # (i.e. CRISPLD2, if not convering from the provided Ensembl ID)
@@ -56,4 +56,4 @@ ggplot(volcano.plot.data.frame, aes(x=logFC, y=(-log10(adj.P.Val)))) +
   annotate("label", y=-log10(0.05), x=-7, label="adj.p=0.05", colour="darkgreen") +
   theme_light()
 
-ggsave(file.path(save_dir, "volcano_plot.png"))
+ggsave(here(save_dir, "volcano_plot.png"))

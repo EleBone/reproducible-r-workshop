@@ -1,8 +1,9 @@
 # Constants used in several files
+library(here)
 
 # Output results/save directory
 save_dir <- "results/"
-dir.create(save_dir)
+dir.create(here(save_dir))
 
 # Gene filtering 
 min.cpm <- 1

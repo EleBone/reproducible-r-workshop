@@ -1,7 +1,7 @@
 # Data preparation
 
 # load helpers ----
-source('src/helpers.R')
+source(here('src/helpers.R'))
 
 # load packages ----
 library(biomaRt)
@@ -10,8 +10,8 @@ library(edgeR)
 # Analysis variables ----
 
 # load data
-treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
-raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
+treatment.groups <- readRDS(here(save_dir, "treatmentGroups.rds"))
+raw.counts.matrix <- readRDS(here(save_dir, "rawCountsMatrix.rds"))
 
 # Continue analysis with loaded objects
 
@@ -117,6 +117,6 @@ plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)",
 # Output: table of prepared gene expression data (counts x samples)
 write.csv(filteredCountsMatUQ, file = paste0(save_dir, "filteredCountsMatUQ.csv"))
 
-saveRDS(filteredCountsMatUQ, file = file.path(save_dir, "filteredCountsMatUQ.rds"))
-saveRDS(filteredCountsMat, file = file.path(save_dir, "filteredCountsMat.rds"))
-saveRDS(gene.table, file = file.path(save_dir, "geneTable.rds"))
+saveRDS(filteredCountsMatUQ, file = here(save_dir, "filteredCountsMatUQ.rds"))
+saveRDS(filteredCountsMat, file = here(save_dir, "filteredCountsMat.rds"))
+saveRDS(gene.table, file = here(save_dir, "geneTable.rds"))

@@ -2,16 +2,16 @@
 # (Differential Gene Expression tests)
 
 # load helpers ----
-source('src/helpers.R')
+source(here('src/helpers.R'))
 
 # load packages
 library(limma)
 library(edgeR)
 
 # load data
-treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
-raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
-filteredCountsMat <- readRDS(file.path(save_dir, "filteredCountsMat.rds"))
+treatment.groups <- readRDS(here(save_dir, "treatmentGroups.rds"))
+raw.counts.matrix <- readRDS(here(save_dir, "rawCountsMatrix.rds"))
+filteredCountsMat <- readRDS(here(save_dir, "filteredCountsMat.rds"))
 
 ## limma ----
 
@@ -42,5 +42,5 @@ topTable.dex <- topTable(efit, coef = "dex", number = Inf, sort.by = "p")
 head(topTable.dex)
 hist(topTable.dex$P.Value)
 
-saveRDS(topTable.dex, file = file.path(save_dir, "topTable.dex.rds"))
-saveRDS(efit, file = file.path(save_dir, "efit.rds"))
+saveRDS(topTable.dex, file = here(save_dir, "topTable.dex.rds"))
+saveRDS(efit, file = here(save_dir, "efit.rds"))
