@@ -10,7 +10,7 @@ knit: (function(inputFile, encoding) {
       source('src/helpers.R');
       rmarkdown::render(inputFile,
                         encoding=encoding,
-                        output_dir=save_dir)})
+                        output_dir=here(save_dir))})
 # The knit function above does two things:
 #   1. This sources the `helpers.R` file to get the value of `save_dir`, and
 #   2. ensures the output is created in the `save_dir`.
@@ -18,16 +18,13 @@ knit: (function(inputFile, encoding) {
 ---
 
 ```{r logo, echo=FALSE}
-htmltools::img(src = knitr::image_uri(file.path("../assets/Garvan-Institute_Logo_RGB.png")), 
+htmltools::img(src = knitr::image_uri(here("assets","Garvan-Institute_Logo_RGB.png")), 
                alt = 'logo', 
                style = 'position:absolute; top:0; right:0; padding:10px; height:128px;')
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-# set working directory
-setwd('../')
 
 # load packages
 library(pluralize)
@@ -40,11 +37,11 @@ gene.of.interest <- "CRISPLD2" # after converting to gene symbols
 options(scipen=999)
 
 # load data
-treatment.groups <- readRDS(file.path(save_dir, "treatmentGroups.rds"))
-raw.counts.matrix <- readRDS(file.path(save_dir, "rawCountsMatrix.rds"))
-filteredCountsMat <- readRDS(file.path(save_dir, "filteredCountsMat.rds"))
-filteredCountsMatUQ <- readRDS(file.path(save_dir, "filteredCountsMatUQ.rds"))
-topTable.dex <- readRDS(file.path(save_dir, "topTable.dex.rds"))
+treatment.groups <- readRDS(here(save_dir, "treatmentGroups.rds"))
+raw.counts.matrix <- readRDS(here(save_dir, "rawCountsMatrix.rds"))
+filteredCountsMat <- readRDS(here(save_dir, "filteredCountsMat.rds"))
+filteredCountsMatUQ <- readRDS(here(save_dir, "filteredCountsMatUQ.rds"))
+topTable.dex <- readRDS(here(save_dir, "topTable.dex.rds"))
 ```
 
 ## Introduction
@@ -58,7 +55,7 @@ The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_word
 ### Filtering, tidying and normalising.
 
 The data were filtered to exclude low-expression counts.
-Genes were required to have a minimum of `r paste(min.cpm, pluralize("count", min.cpm))` per million in at least `r min.cpm.fraction * 100` percent of samples. 
+Genes were required to have a minimum of `r paste(min.cpm, pluralize("count", min.cpm))` per million in at least `r min.cpm.fraction * 100` percent of samples.
 After filtering there were `r nrow(filteredCountsMat)` genes retained from the initial `r nrow(raw.counts.matrix)` genes.
 
 In the 'Airway' package data genes are referred to by an accession number (in this case Ensembl ID).
@@ -87,7 +84,6 @@ boxplot(log2(1+filteredCountsMat), las=2, cex.axis=0.5, cex=0.5,
         xlab="Samples")
 ```
 
-
 ```{r normalised, fig.cap = "Box plot of upper-quartile normalised counts by sample", echo=FALSE}
 boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
         ylab="log2(1+counts)",
@@ -96,7 +92,6 @@ boxplot(log2(1+filteredCountsMatUQ), las=2, cex.axis=0.5, cex=0.5,
 
 <!-- There was not a strong difference in counts between treatment groups. -->
 <!-- While the treatment group had larger variation, there was overlap in the distribution of counts between treatments (see fig \@ref(fig:count-by-treatment)). -->
-
 <!-- ```{r count-by-treatment, fig.cap = "Box plot comparing amount of data collected in each treatment group", echo=FALSE} -->
 <!-- plot(y = colSums(filteredCountsMat)/10^6, ylab="Counts (millions)", -->
 <!--      ylim=c(15, max(colSums(filteredCountsMat)/10^6)), -->
