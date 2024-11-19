@@ -46,7 +46,7 @@ topTable.dex <- readRDS(here(save_dir, "topTable.dex.rds"))
 
 This report contains exploratory data analysis results of the 'airways' package RNAseq data [@Himes2014].
 
-The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_words(colnames(raw.counts.matrix))`), and `r length(levels(treatment.groups))` treatment groups (`r knit::combine_words(levels(treatment.groups), before = "'", sep = " / ", and = "")`).
+The data consists of `r ncol(raw.counts.matrix)` samples (`r knitr::combine_words(colnames(raw.counts.matrix))`), and `r length(levels(treatment.groups))` treatment groups (`r knitr::combine_words(levels(treatment.groups), before = "'", sep = " / ", and = "")`).
 
 ## Methods
 
