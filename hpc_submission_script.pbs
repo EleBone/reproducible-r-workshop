@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#PBS -N reproducible-r
+#PBS -A im21
+#PBS -q copyq
+#PBS -l storage=gdata/im21+gdata/io72
+#PBS -l ncpus=1
+#PBS -l mem=8gb
+#PBS -l walltime=00:30:00
+
+module use /g/data/io72/apps/Modules/modulefiles
+module load R/4.4.3
+
+PROJECT_DIR="$HOME/r-workshop/reproducible-r-workshop"
+
+cd $PROJECT_DIR
+
+Rscript -e "source('renv/activate.R'); source('main.R')"
+
