@@ -3,6 +3,7 @@
 # load packages
 library(ggplot2)
 library(ggrepel)
+library(viridis)
 
 # load data
 topTable.dex <- readRDS(file.path(save_dir, "topTable.dex.rds"))
@@ -44,13 +45,47 @@ ggplot(volcano.plot.data.frame, aes(x=logFC, y=(-log10(adj.P.Val)))) +
 
 # (apply customisations from manual testing)
 
+# ggplot(volcano.plot.data.frame, aes(x=logFC, y=(-log10(adj.P.Val)))) + 
+#   xlim(c(-8,8)) + ylim(c(0,4.5)) +
+#   geom_point(size=1, alpha=0.4) + 
+#   geom_text_repel(aes(label=label), max.overlaps = Inf, size=3, colour="blue", 
+#                   force = 5, min.segment.length = 0, segment.alpha = 0.2) +
+#   geom_hline(yintercept = -log10(0.05), alpha = 0.5, colour = "darkgreen", linetype = "dashed") + 
+#   annotate("label", y=-log10(0.05), x=-7, label="adj.p=0.05", colour="darkgreen") +
+#   theme_light()
+
+# ggsave(file.path(save_dir, "volcano_plot.png"))
+
+# Define significance thresholds
+volcano.plot.data.frame$significance <- "Not Significant"
+volcano.plot.data.frame$significance[
+  volcano.plot.data.frame$adj.P.Val < 0.05 & volcano.plot.data.frame$logFC > 1
+] <- "Up-regulated"
+volcano.plot.data.frame$significance[
+  volcano.plot.data.frame$adj.P.Val < 0.05 & volcano.plot.data.frame$logFC < -1
+] <- "Down-regulated"
+
+# Make it a factor for a clean legend
+volcano.plot.data.frame$significance <- factor(
+  volcano.plot.data.frame$significance, 
+  levels = c("Up-regulated", "Down-regulated", "Not Significant")
+)
+
+
 ggplot(volcano.plot.data.frame, aes(x=logFC, y=(-log10(adj.P.Val)))) + 
   xlim(c(-8,8)) + ylim(c(0,4.5)) +
-  geom_point(size=1, alpha=0.4) + 
+  
+  # Map 'color' to our new variable
+  geom_point(aes(color = significance), size=1, alpha=0.4) + 
+  
   geom_text_repel(aes(label=label), max.overlaps = Inf, size=3, colour="blue", 
-                  force = 5, min.segment.length = 0, segment.alpha = 0.2) +
+                  force = 5, min.segment.length = 0, segment.alpha = 0.2) + 
   geom_hline(yintercept = -log10(0.05), alpha = 0.5, colour = "darkgreen", linetype = "dashed") + 
-  annotate("label", y=-log10(0.05), x=-7, label="adj.p=0.05", colour="darkgreen") +
+  annotate("label", y=-log10(0.05), x=-7, label="adj.p=0.05", colour="darkgreen") + 
+  
+  # This uses the new package!
+  scale_color_viridis_d(option = "C") +
+  
   theme_light()
 
 ggsave(file.path(save_dir, "volcano_plot.png"))
