@@ -13,9 +13,9 @@ set -euo pipefail
 module use /g/data/io72/apps/Modules/modulefiles
 module load R/4.4.3
 
-PROJECT_DIR="$HOME/r-workshop/reproducible-r-workshop"
+PROJECT_DIR="$HOME/reproducible-r-workshop"
 
 cd $PROJECT_DIR
 
-Rscript -e "source('renv/activate.R'); source('main.R')"
+Rscript -e "source('main.R')"
 
