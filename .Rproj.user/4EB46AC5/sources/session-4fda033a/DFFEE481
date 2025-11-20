@@ -1,0 +1,26 @@
+{
+    "id": "DFFEE481",
+    "path": "~/reproducible-r-workshop/airways/airways.R",
+    "project_path": "airways/airways.R",
+    "type": "r_source",
+    "hash": "3180514713",
+    "contents": "",
+    "dirty": false,
+    "created": 1763607742712.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "152,0",
+        "scrollLine": "139"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1763608538,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1763608538692,
+    "read_only": false,
+    "read_only_alternatives": []
+}
